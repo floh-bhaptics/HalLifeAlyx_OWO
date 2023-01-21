@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CFAFE333-4B28-43F6-8875-EC9CFDAB4FFC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TactsuitAlyx</RootNamespace>
-    <AssemblyName>TactsuitAlyx</AssemblyName>
+    <RootNamespace>OWOAlyx</RootNamespace>
+    <AssemblyName>OWOAlyx</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>bhaptics.ico</ApplicationIcon>
+    <ApplicationIcon>OWO.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -50,8 +50,8 @@
     <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack.1.1.1\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="OWO.dev">
-      <HintPath>..\..\..\OWO_SDK\OWO.dev.dll</HintPath>
+    <Reference Include="OWO">
+      <HintPath>..\..\..\OWO_SDK\OWO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -180,12 +180,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomNumber.cs" />
-    <Compile Include="SettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="TactsuitVR.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -198,168 +192,24 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="TactFiles\BackpackRetrieveClipLeft_1.tact" />
-    <None Include="TactFiles\BackpackRetrieveClipRight_1.tact" />
-    <None Include="TactFiles\BackpackRetrieveResinLeft_1.tact" />
-    <None Include="TactFiles\BackpackRetrieveResinRight_1.tact" />
-    <None Include="TactFiles\BackpackStoreClipLeft_1.tact" />
-    <None Include="TactFiles\BackpackStoreClipRight_1.tact" />
-    <None Include="TactFiles\BackpackStoreResinLeft_1.tact" />
-    <None Include="TactFiles\BackpackStoreResinRight_1.tact" />
-    <None Include="TactFiles\BugBaitGrenade_1.tact" />
-    <None Include="TactFiles\ChamberedRoundLeft_1.tact" />
-    <None Include="TactFiles\ChamberedRound_1.tact" />
-    <None Include="TactFiles\ClipInsertedLeft_1.tact" />
-    <None Include="TactFiles\ClipInserted_1.tact" />
-    <None Include="TactFiles\CombineGantry_1.tact" />
-    <None Include="TactFiles\CombineS_1.tact" />
-    <None Include="TactFiles\Combine_1.tact" />
-    <None Include="TactFiles\ConcussionGrenade_1.tact" />
-    <None Include="TactFiles\CoughHead_1.tact" />
-    <None Include="TactFiles\Cough_1.tact" />
-    <None Include="TactFiles\Cough_2.tact" />
-    <None Include="TactFiles\DamageExplosion_1.tact" />
-    <None Include="TactFiles\DamageExplosion_2.tact" />
-    <None Include="TactFiles\DamageFire_1.tact" />
-    <None Include="TactFiles\DamageFire_2.tact" />
-    <None Include="TactFiles\DamageFire_3.tact" />
-    <None Include="TactFiles\DamageLaser_1.tact" />
-    <None Include="TactFiles\DamageSpark_1.tact" />
-    <None Include="TactFiles\DamageSpark_2.tact" />
-    <None Include="TactFiles\DefaultDamage_1.tact" />
-    <None Include="TactFiles\DefaultHead_1.tact" />
-    <None Include="TactFiles\EnvironmentExplosion_1.tact" />
-    <None Include="TactFiles\EnvironmentFire_1.tact" />
-    <None Include="TactFiles\EnvironmentFire_2.tact" />
-    <None Include="TactFiles\EnvironmentLaser_1.tact" />
-    <None Include="TactFiles\EnvironmentPoison_1.tact" />
-    <None Include="TactFiles\EnvironmentRadiation_1.tact" />
-    <None Include="TactFiles\EnvironmentSpark_1.tact" />
-    <None Include="TactFiles\EnvironmentSpark_2.tact" />
-    <None Include="TactFiles\FallbackPistolLeft_1.tact" />
-    <None Include="TactFiles\FallbackPistol_1.tact" />
-    <None Include="TactFiles\FallbackShotgunLeft_1.tact" />
-    <None Include="TactFiles\FallbackShotgun_1.tact" />
-    <None Include="TactFiles\FallbackSMGLeft_1.tact" />
-    <None Include="TactFiles\FallbackSMG_1.tact" />
-    <None Include="TactFiles\FoliageTurret_1.tact" />
-    <None Include="TactFiles\FragGrenade_1.tact" />
-    <None Include="TactFiles\GrabbedByBarnacle_1.tact" />
-    <None Include="TactFiles\GrabbedByBarnacle_2.tact" />
-    <None Include="TactFiles\GrabbedByBarnacle_3.tact" />
-    <None Include="TactFiles\GrabbedByBarnacle_4.tact" />
-    <None Include="TactFiles\GravityGloveCatchLeft_1.tact" />
-    <None Include="TactFiles\GravityGloveCatch_1.tact" />
-    <None Include="TactFiles\GravityGloveLockOnLeft_1.tact" />
-    <None Include="TactFiles\GravityGloveLockOn_1.tact" />
-    <None Include="TactFiles\GravityGlovePullLeft_1.tact" />
-    <None Include="TactFiles\GravityGlovePull_1.tact" />
-    <None Include="TactFiles\GunHead_1.tact" />
-    <None Include="TactFiles\GunHead_2.tact" />
-    <None Include="TactFiles\GunHead_3.tact" />
-    <None Include="TactFiles\GunHead_4.tact" />
-    <None Include="TactFiles\GunHead_5.tact" />
-    <None Include="TactFiles\GunHead_6.tact" />
-    <None Include="TactFiles\HandGrenade_1.tact" />
-    <None Include="TactFiles\HealthPenUse_1.tact" />
-    <None Include="TactFiles\HealthStationUseLeftArm_1.tact" />
-    <None Include="TactFiles\HealthStationUseRightArm_1.tact" />
-    <None Include="TactFiles\HealthStationUse_1.tact" />
-    <None Include="TactFiles\HeartBeatFast_1.tact" />
-    <None Include="TactFiles\HeartBeat_1.tact" />
-    <None Include="TactFiles\ItemHolderRemoveLeft_1.tact" />
-    <None Include="TactFiles\ItemHolderRemove_1.tact" />
-    <None Include="TactFiles\ItemHolderStoreLeft_1.tact" />
-    <None Include="TactFiles\ItemHolderStore_1.tact" />
-    <None Include="TactFiles\KickbackPistolLeft_1.tact" />
-    <None Include="TactFiles\KickbackPistol_1.tact" />
-    <None Include="TactFiles\KickbackShotgunLeft_1.tact" />
-    <None Include="TactFiles\KickbackShotgun_1.tact" />
-    <None Include="TactFiles\KickbackSMGLeft_1.tact" />
-    <None Include="TactFiles\KickbackSMG_1.tact" />
-    <None Include="TactFiles\MetroPolice_1.tact" />
-    <None Include="TactFiles\PlayerGrenadeLaunchLeft_1.tact" />
-    <None Include="TactFiles\PlayerGrenadeLaunch_1.tact" />
-    <None Include="TactFiles\PlayerShootDefaultLeft_1.tact" />
-    <None Include="TactFiles\PlayerShootDefault_1.tact" />
-    <None Include="TactFiles\PlayerShootPistolLeft_1.tact" />
-    <None Include="TactFiles\PlayerShootPistol_1.tact" />
-    <None Include="TactFiles\PlayerShootShotgunLeft_1.tact" />
-    <None Include="TactFiles\PlayerShootShotgun_1.tact" />
-    <None Include="TactFiles\PlayerShootSMGLeft_1.tact" />
-    <None Include="TactFiles\PlayerShootSMGLeft_2.tact" />
-    <None Include="TactFiles\PlayerShootSMG_1.tact" />
-    <None Include="TactFiles\PlayerShootSMG_2.tact" />
-    <None Include="TactFiles\RollerGrenade_1.tact" />
-    <None Include="TactFiles\RollerMine_1.tact" />
-    <None Include="TactFiles\ShockOnHandLeft_1.tact" />
-    <None Include="TactFiles\ShockOnHandRight_1.tact" />
-    <None Include="TactFiles\Sniper_1.tact" />
-    <None Include="TactFiles\Sniper_2.tact" />
-    <None Include="TactFiles\SpyGrenade_1.tact" />
-    <None Include="TactFiles\Strider_1.tact" />
-    <None Include="TactFiles\Turret_1.tact" />
-    <None Include="TactFiles\UnarmedAntlionGuard_1.tact" />
-    <None Include="TactFiles\UnarmedAntlionGuard_2.tact" />
-    <None Include="TactFiles\UnarmedAntlion_1.tact" />
-    <None Include="TactFiles\UnarmedBloater_1.tact" />
-    <None Include="TactFiles\UnarmedBloater_2.tact" />
-    <None Include="TactFiles\UnarmedFastZombie_1.tact" />
-    <None Include="TactFiles\UnarmedFastZombie_2.tact" />
-    <None Include="TactFiles\UnarmedFastZombie_3.tact" />
-    <None Include="TactFiles\UnarmedHeadcrabArmored_1.tact" />
-    <None Include="TactFiles\UnarmedHeadcrabArmored_2.tact" />
-    <None Include="TactFiles\UnarmedHeadcrabBlack_1.tact" />
-    <None Include="TactFiles\UnarmedHeadcrabFast_1.tact" />
-    <None Include="TactFiles\UnarmedHeadcrabFast_2.tact" />
-    <None Include="TactFiles\UnarmedHeadcrabRunner_1.tact" />
-    <None Include="TactFiles\UnarmedHeadcrab_1.tact" />
-    <None Include="TactFiles\UnarmedHeadcrab_2.tact" />
-    <None Include="TactFiles\UnarmedHead_1.tact" />
-    <None Include="TactFiles\UnarmedHead_2.tact" />
-    <None Include="TactFiles\UnarmedHead_3.tact" />
-    <None Include="TactFiles\UnarmedHead_4.tact" />
-    <None Include="TactFiles\UnarmedHead_5.tact" />
-    <None Include="TactFiles\UnarmedHead_6.tact" />
-    <None Include="TactFiles\UnarmedManhack_1.tact" />
-    <None Include="TactFiles\UnarmedManhack_2.tact" />
-    <None Include="TactFiles\UnarmedPoisonZombie_1.tact" />
-    <None Include="TactFiles\UnarmedPoisonZombie_2.tact" />
-    <None Include="TactFiles\UnarmedZombieBlind_1.tact" />
-    <None Include="TactFiles\UnarmedZombieBlind_2.tact" />
-    <None Include="TactFiles\UnarmedZombie_1.tact" />
-    <None Include="TactFiles\UnarmedZombie_2.tact" />
-    <None Include="TactFiles\UnarmedZombine_1.tact" />
-    <None Include="TactFiles\UnarmedZombine_2.tact" />
-    <None Include="TactFiles\UnarmedZombine_3.tact" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bhaptics.ico" />
+    <Content Include="OWO.ico" />
     <Content Include="Windows Logo.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(ProjectDir)TactFiles\*.*" "$(TargetDir)bHaptics\" /S /Y</PostBuildEvent>
+    <PostBuildEvent>XCOPY "$(ProjectDir)OWOSensations\*.*" "$(TargetDir)OWO\" /S /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

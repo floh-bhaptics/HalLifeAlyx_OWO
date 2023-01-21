@@ -48,7 +48,7 @@ namespace TactsuitAlyx
                     tactsuitVr.ProvideHapticFeedback(0, 0, TactsuitVR.FeedbackType.HeartBeat, false, TactsuitVR.FeedbackType.NoFeedback);
                 }
 
-                Thread.Sleep(Properties.Settings.Default.sleepDurationHeartBeat);
+                Thread.Sleep(1100);
             }
 
             lowHealthFeedbackPlaying = false;
@@ -63,7 +63,7 @@ namespace TactsuitAlyx
                     tactsuitVr.ProvideHapticFeedback(0, 0, TactsuitVR.FeedbackType.HeartBeatFast, false, TactsuitVR.FeedbackType.NoFeedback);
                 }
 
-                Thread.Sleep(tooLow ? Properties.Settings.Default.sleepDurationHeartBeatTooFast : Properties.Settings.Default.sleepDurationHeartBeatFast);
+                Thread.Sleep(tooLow ? 400 : 600);
             }
 
             veryLowHealthFeedbackPlaying = false;
@@ -136,13 +136,6 @@ namespace TactsuitAlyx
         {
             TactsuitVR.FeedbackType feedback = tactsuitVr.GetFeedbackTypeOfWeaponFromPlayer(weapon, leftHandedMode);
 
-            if ((leftHandedMode && !(tactsuitVr.hapticPlayer.IsActive(PositionType.ForearmL) || tactsuitVr.hapticPlayer.IsActive(PositionType.Left))) ||
-                (!leftHandedMode && !(tactsuitVr.hapticPlayer.IsActive(PositionType.ForearmR) || tactsuitVr.hapticPlayer.IsActive(PositionType.Right))))
-            {
-                //Use Fallback instead.
-                feedback = tactsuitVr.GetFallbackTypeOfWeaponFromPlayer(feedback, leftHandedMode);
-            }
-           
             tactsuitVr.ProvideHapticFeedback(0, 0, feedback, false, twoHandedMode ? tactsuitVr.GetOtherHandFeedback(feedback) : TactsuitVR.FeedbackType.NoFeedback);
             tactsuitVr.ProvideHapticFeedback(0, 0, tactsuitVr.GetKickbackOfWeaponFromPlayer(feedback, leftHandedMode), false, TactsuitVR.FeedbackType.NoFeedback);
         }
@@ -157,7 +150,7 @@ namespace TactsuitAlyx
                     tactsuitVr.ProvideHapticFeedback(0, locationHeight, (leftHandedMode ? primaryHand : !primaryHand) ? TactsuitVR.FeedbackType.GravityGloveLockOnLeft : TactsuitVR.FeedbackType.GravityGloveLockOn, false, TactsuitVR.FeedbackType.NoFeedback);
                 }
 
-                Thread.Sleep(Properties.Settings.Default.sleepDurationGrabbityLock);
+                Thread.Sleep(780);
             }
         }
 
@@ -218,7 +211,7 @@ namespace TactsuitAlyx
                     tactsuitVr.ProvideHapticFeedback(0, 0, TactsuitVR.FeedbackType.GrabbedByBarnacle, false, TactsuitVR.FeedbackType.NoFeedback);
                 }
 
-                Thread.Sleep(Properties.Settings.Default.sleepDurationBarnacleGrab);
+                Thread.Sleep(1000);
             }
         }
 
@@ -505,7 +498,7 @@ namespace TactsuitAlyx
                     tactsuitVr.ProvideHapticFeedback(0, 0, TactsuitVR.FeedbackType.Cough, false, TactsuitVR.FeedbackType.NoFeedback);
                 }
 
-                Thread.Sleep(Properties.Settings.Default.sleepDurationCoughing);
+                Thread.Sleep(1500);
             }
         }
 

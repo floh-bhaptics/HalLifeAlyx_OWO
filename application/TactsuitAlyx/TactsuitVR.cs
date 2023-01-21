@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OWOHaptic;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
-using Bhaptics.Tact;
+//using Bhaptics.Tact;
 
 namespace TactsuitAlyx
 {
@@ -19,12 +20,17 @@ namespace TactsuitAlyx
         }
 
         public bool systemInitialized = false;
-        public HapticPlayer hapticPlayer;
+        //public HapticPlayer hapticPlayer;
         
         Dictionary<FeedbackType, Feedback> feedbackMap = new Dictionary<FeedbackType, Feedback>();
+        public Dictionary<String, ISensation> FeedbackMap = new Dictionary<String, ISensation>();
+        public Dictionary<String, ISensation> FeedbackMapWithoutMuscles = new Dictionary<String, ISensation>();
 
         public enum FeedbackType
         {
+            Startup,
+            ThreeHeartBeats,
+
             //Attacks on Player's head
             DefaultHead,
             UnarmedHead,
@@ -470,6 +476,9 @@ namespace TactsuitAlyx
         void FillFeedbackList()
         {
             feedbackMap.Clear();
+            feedbackMap.Add(FeedbackType.Startup, new Feedback(FeedbackType.DefaultHead, "Startup_", 0));
+            feedbackMap.Add(FeedbackType.ThreeHeartBeats, new Feedback(FeedbackType.UnarmedHead, "ThreeHeartBeats_", 0));
+
             feedbackMap.Add(FeedbackType.DefaultHead, new Feedback(FeedbackType.DefaultHead, "DefaultHead_", 0));
             feedbackMap.Add(FeedbackType.UnarmedHead, new Feedback(FeedbackType.UnarmedHead, "UnarmedHead_", 0));
             feedbackMap.Add(FeedbackType.GunHead, new Feedback(FeedbackType.GunHead, "GunHead_", 0));
@@ -593,21 +602,15 @@ namespace TactsuitAlyx
             feedbackMap.Add(FeedbackType.DefaultDamage, new Feedback(FeedbackType.DefaultDamage, "DefaultDamage_", 0));
         }
 
-        void TactFileRegister(string configPath, string filename, Feedback feedback)
+        public string DetachFromMuscles(string pattern)
         {
-            if (feedbackMap.ContainsKey(feedback.feedbackType))
-            {
-                Feedback f = feedbackMap[feedback.feedbackType];
-                f.feedbackFileCount += 1;
-                feedbackMap[feedback.feedbackType] = f;
-                
-                hapticPlayer.RegisterTactFileStr(feedback.prefix + (feedbackMap[feedback.feedbackType].feedbackFileCount).ToString(), File.ReadAllText(configPath + "\\" + filename));
-            }
+            return System.Text.RegularExpressions.Regex.Replace(pattern, "\\|([0-9]%[0-9]+(,)*)+", "");
         }
+
 
         void RegisterFeedbackFiles()
         {
-            string configPath = Directory.GetCurrentDirectory() + "\\bHaptics";
+            string configPath = Directory.GetCurrentDirectory() + "\\OWO";
 
             DirectoryInfo d = new DirectoryInfo(configPath);
             FileInfo[] Files = d.GetFiles("*.tact");
@@ -615,6 +618,8 @@ namespace TactsuitAlyx
             for (int i = 0; i < Files.Length; i++)
             {
                 string filename = Files[i].Name;
+                string fullName = Files[i].FullName;
+                string prefix = Path.GetFileNameWithoutExtension(filename);
 
                 if (filename == "." || filename == "..")
                     continue;
@@ -623,7 +628,24 @@ namespace TactsuitAlyx
                 {
                     if (filename.StartsWith(element.Value.prefix))
                     {
-                        TactFileRegister(configPath, filename, element.Value);
+                        //TactFileRegister(configPath, filename, element.Value);
+                        string tactFileStr = File.ReadAllText(fullName);
+                        string tactFileStrWithoutMuscles = DetachFromMuscles(tactFileStr);
+                        try
+                        {
+                            ISensation test = Sensation.FromCode(tactFileStr);
+                            ISensation testNoMuscles = Sensation.FromCode(tactFileStrWithoutMuscles);
+                            //bHaptics.RegisterFeedback(prefix, tactFileStr);
+                            //LOG("Pattern registered: " + prefix);
+                            Feedback f = feedbackMap[element.Value.feedbackType];
+                            f.feedbackFileCount += 1;
+                            feedbackMap[element.Value.feedbackType] = f;
+
+                            FeedbackMap.Add(prefix, test);
+                            FeedbackMapWithoutMuscles.Add(prefix, testNoMuscles);
+                        }
+                        catch (Exception e) { break; }
+
                         break;
                     }
                 }
@@ -634,93 +656,104 @@ namespace TactsuitAlyx
         {
             if (!systemInitialized)
             {
-                hapticPlayer = new HapticPlayer();
-
-                if (hapticPlayer != null)
-                {
-                    RegisterFeedbackFiles();
-                    systemInitialized = true;
-                }
+                RegisterFeedbackFiles();
+                InitializeOWO();
             }
         }
 
-        bool IsPlayingKeyAll(string prefix, int feedbackFileCount)
+        private async void InitializeOWO()
         {
-            for (int i = 1; i <= feedbackFileCount; i++)
+            //LOG("Initializing suit");
+
+            await OWO.AutoConnectAsync();
+
+            if (OWO.IsConnected)
             {
-                string key = prefix + i.ToString();
-                if (hapticPlayer.IsPlaying(key))
-                {
-                    return true;
-                }
+                systemInitialized = true;
+                //LOG("OWO suit connected.");
+                PlayBackFeedback("Startup");
             }
-            return false;
+            //if (!systemInitialized) LOG("Owo is not enabled?!?!");
         }
 
-        void ProvideHapticFeedbackThread(float locationAngle, float locationHeight, FeedbackType effect, float intensityMultiplier, bool waitToPlay)
+        public void PlayBackFeedback(string feedback)
         {
-            if (intensityMultiplier < 0.001)
+            if (FeedbackMap.ContainsKey(feedback))
+            {
+                OWO.Send(FeedbackMap[feedback]);
+            }
+            //else LOG("Feedback not registered: " + feedback);
+        }
+
+        public void PlayBackHit(string pattern, float xzAngle, float yShift)
+        {
+            if (FeedbackMap.ContainsKey(pattern))
+            {
+                ISensation sensation = FeedbackMapWithoutMuscles[pattern];
+                Muscle myMuscle = Muscle.Pectoral_R;
+                // two parameters can be given to the pattern to move it on the vest:
+                // 1. An angle in degrees [0, 360] to turn the pattern to the left
+                // 2. A shift [-0.5, 0.5] in y-direction (up and down) to move it up or down
+                if ((xzAngle < 90f))
+                {
+                    if (yShift >= 0f) myMuscle = Muscle.Pectoral_L;
+                    else myMuscle = Muscle.Abdominal_L;
+                }
+                if ((xzAngle > 90f) && (xzAngle < 180f))
+                {
+                    if (yShift >= 0f) myMuscle = Muscle.Dorsal_L;
+                    else myMuscle = Muscle.Lumbar_L;
+                }
+                if ((xzAngle > 180f) && (xzAngle < 270f))
+                {
+                    if (yShift >= 0f) myMuscle = Muscle.Dorsal_R;
+                    else myMuscle = Muscle.Lumbar_R;
+                }
+                if ((xzAngle > 270f))
+                {
+                    if (yShift >= 0f) myMuscle = Muscle.Pectoral_R;
+                    else myMuscle = Muscle.Abdominal_R;
+                }
+                OWO.Send(sensation, myMuscle);
+            }
+            else
+            {
+                //LOG("Feedback not registered: " + pattern);
                 return;
-            
-            if (!systemInitialized || hapticPlayer == null)
-                CreateSystem();
-
-            if (hapticPlayer != null)
-            {
-                if (feedbackMap.ContainsKey(effect))
-                {
-                    if (feedbackMap[effect].feedbackFileCount > 0)
-                    {
-                        if (waitToPlay)
-                        {
-                            if (IsPlayingKeyAll(feedbackMap[effect].prefix, feedbackMap[effect].feedbackFileCount))
-                            {
-                                return;
-                            }
-                        }
-
-                        string key = feedbackMap[effect].prefix + (RandomNumber.Between(1, feedbackMap[effect].feedbackFileCount)).ToString();
-
-                        if (locationHeight < -0.5f)
-                            locationHeight = -0.5f;
-                        else if (locationHeight > 0.5f)
-                            locationHeight = 0.5f;
-
-                        Bhaptics.Tact.RotationOption RotOption = new RotationOption(locationAngle, locationHeight);
-
-                        Bhaptics.Tact.ScaleOption scaleOption = new ScaleOption(intensityMultiplier, 1.0f);
-
-                        //hapticPlayer.SubmitRegistered(key, scaleOption);
-                        hapticPlayer.SubmitRegisteredVestRotation(key, RotOption, scaleOption);
-                    }
-                }
             }
+
         }
+
+        public void ArmHit(string pattern, bool isRightArm)
+        {
+            ISensation sensation = FeedbackMap[pattern];
+            Muscle myMuscle = Muscle.Arm_L;
+            if (isRightArm) myMuscle = Muscle.Arm_R;
+            OWO.Send(sensation, myMuscle);
+        }
+
+        public void GunRecoil(bool isRightHand, float intensity = 1.0f, bool isTwoHanded = false, bool supportHand = true)
+        {
+            if (isTwoHanded)
+            {
+                PlayBackFeedback("Recoil_both");
+                return;
+            }
+            if (isRightHand) PlayBackFeedback("Recoil_R");
+            else PlayBackFeedback("Recoil_L");
+        }
+
 
         public void ProvideHapticFeedback(float locationAngle, float locationHeight, FeedbackType effect, bool waitToPlay, FeedbackType secondEffect)
         {
-            if (effect != FeedbackType.NoFeedback)
-            {
-                float intensityMultiplier = Config.GetIntensityMultiplier(effect);
-                if (intensityMultiplier > 0.01f)
-                {
-                    Thread thread = new Thread(() =>
-                        ProvideHapticFeedbackThread(locationAngle, locationHeight, effect, intensityMultiplier, waitToPlay));
-                    thread.Start();
-                    if (secondEffect != FeedbackType.NoFeedback)
-                    {
-                        Thread thread2 = new Thread(() =>
-                            ProvideHapticFeedbackThread(locationAngle, locationHeight, secondEffect, intensityMultiplier, waitToPlay));
-                        thread2.Start();
-                    }
-                }
-            }
+            if (effect == FeedbackType.NoFeedback) return;
+            string myFeedback = feedbackMap[effect].prefix + "_1";
+            if (locationAngle != 0.0f) PlayBackHit(myFeedback, locationAngle, locationHeight);
+            else PlayBackFeedback(myFeedback);
         }
 
         public void StopHapticFeedback(FeedbackType effect)
         {
-            if (hapticPlayer != null)
-            {
                 if (feedbackMap.ContainsKey(effect))
                 {
                     if (feedbackMap[effect].feedbackFileCount > 0)
@@ -728,11 +761,11 @@ namespace TactsuitAlyx
                         for (int i = 1; i <= feedbackMap[effect].feedbackFileCount; i++)
                         {
                             string key = feedbackMap[effect].prefix + i.ToString();
-                            hapticPlayer.TurnOff(key);
+                            OWO.StopSensation();
+                            //hapticPlayer.TurnOff(key);
                         }
                     }
                 }
-            }
         }
 
         public void PlayRandom()

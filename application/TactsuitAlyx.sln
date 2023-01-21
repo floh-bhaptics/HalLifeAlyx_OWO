@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TactsuitAlyx", "TactsuitAlyx\TactsuitAlyx.csproj", "{CFAFE333-4B28-43F6-8875-EC9CFDAB4FFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OWOAlyx", "TactsuitAlyx\OWOAlyx.csproj", "{CFAFE333-4B28-43F6-8875-EC9CFDAB4FFC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{55D74644-DED9-41D9-A3C2-D7AF37B0F61B}"
 	ProjectSection(SolutionItems) = preProject

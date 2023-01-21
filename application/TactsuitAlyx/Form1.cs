@@ -21,6 +21,8 @@ namespace TactsuitAlyx
 
         public TactsuitVR tactsuitVr;
         public Engine engine;
+        public string alyxDirectory = "C:\\Steam\\steamapps\\common\\Half-Life Alyx";
+
 
         private delegate void SafeCallDelegate(string text);
 
@@ -394,7 +396,7 @@ namespace TactsuitAlyx
             string exePath = txtAlyxDirectory.Text + "\\game\\bin\\win64\\hlvr.exe";
             if (!File.Exists(exePath))
             {
-                MessageBox.Show("Please select your Half-Life Alyx installation folder correctly first.", "Error Starting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select your Half-Life Alyx installation folder correctly first: " + exePath, "Error Starting", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             string scriptPath = txtAlyxDirectory.Text + "\\game\\hlvr\\scripts\\vscripts\\tactsuit.lua";
@@ -414,7 +416,6 @@ namespace TactsuitAlyx
             btnStart.Enabled = false;
             btnStop.Enabled = true;
             btnBrowse.Enabled = false;
-            btnTest.Enabled = true;
             tactsuitVr = new TactsuitVR();
             tactsuitVr.CreateSystem();
             engine = new Engine(tactsuitVr);
@@ -432,17 +433,38 @@ namespace TactsuitAlyx
             btnStart.Enabled = true;
             btnStop.Enabled = false;
             btnBrowse.Enabled = true;
-            btnTest.Enabled = false;
 
             parsingMode = false;
 
-            if (tactsuitVr.hapticPlayer != null)
+            if (tactsuitVr.systemInitialized)
             {
-                tactsuitVr.hapticPlayer.Disable();
-                tactsuitVr.hapticPlayer.Dispose();
+                //tactsuitVr.hapticPlayer.Disable();
+                //tactsuitVr.hapticPlayer.Dispose();
             }
 
             WriteTextSafe("Stopping...");
+        }
+
+        public string readAlyxDir()
+        {
+            string mydir = alyxDirectory;
+            if (File.Exists(".\\AlyxDir.settings"))
+            {
+                StreamReader sr = new StreamReader(".\\AlyxDir.settings");
+                mydir = sr.ReadLine();
+                alyxDirectory = mydir;
+                sr.Close();
+            }
+
+            return mydir;
+        }
+
+        public void writeAlyxDir(string directory)
+        {
+            StreamWriter sw = new StreamWriter(".\\AlyxDir.settings", true, Encoding.ASCII);
+            sw.WriteLine(directory);
+            sw.Close();
+            alyxDirectory = directory;
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -454,40 +476,9 @@ namespace TactsuitAlyx
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 txtAlyxDirectory.Text = dialog.FileName;
-                Properties.Settings.Default.AlyxDirectory = txtAlyxDirectory.Text;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        private void btnSettings_Click(object sender, EventArgs e)
-        {
-            SettingsForm sForm = new SettingsForm(this);
-            sForm.Show();
-            btnSettings.Enabled = false;
-        }
-
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            if (tactsuitVr != null)
-            {
-                string active = ((tactsuitVr.hapticPlayer._activePosition.Contains(PositionType.All)) ? " {All} " : "") + ((tactsuitVr.hapticPlayer._activePosition.Contains(PositionType.Vest)) ? " {Vest} " : "") + ((tactsuitVr.hapticPlayer._activePosition.Contains(PositionType.ForearmR) || tactsuitVr.hapticPlayer._activePosition.Contains(PositionType.Right)) ? " {Right Arm} " : "") + ((tactsuitVr.hapticPlayer._activePosition.Contains(PositionType.ForearmL) || tactsuitVr.hapticPlayer._activePosition.Contains(PositionType.Left)) ? " {Left Arm} " : "") + ((tactsuitVr.hapticPlayer._activePosition.Contains(PositionType.Head)) ? " {Head} " : "");
-
-                //string activeDevices = "";
-                //for (int i = 0; i < tactsuitVr.hapticPlayer._activePosition.Count; i++)
-                //{
-                //    if (i > 0)
-                //    {
-                //        activeDevices += ",";
-                //    }
-                //    activeDevices += (int)tactsuitVr.hapticPlayer._activePosition[i];
-                //}
-
-                if (active.Trim().IsNullOrEmpty())
-                    active = "{None}";
-
-                WriteTextSafe("Active devices: " + active);
-
-                tactsuitVr.PlayRandom();
+                writeAlyxDir(txtAlyxDirectory.Text);
+                //Properties.Settings.Default.AlyxDirectory = txtAlyxDirectory.Text;
+                //Properties.Settings.Default.Save();
             }
         }
 
@@ -496,21 +487,20 @@ namespace TactsuitAlyx
             btnStart.Enabled = true;
             btnStop.Enabled = false;
             btnBrowse.Enabled = true;
-            btnTest.Enabled = false;
 
             parsingMode = false;
 
-            if (tactsuitVr != null && tactsuitVr.hapticPlayer != null)
+            if (tactsuitVr != null && tactsuitVr.systemInitialized)
             {
                 WriteTextSafe("Stopping...");
-                tactsuitVr.hapticPlayer.Disable();
-                tactsuitVr.hapticPlayer.Dispose();
+                //tactsuitVr.hapticPlayer.Disable();
+                //tactsuitVr.hapticPlayer.Dispose();
             }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            txtAlyxDirectory.Text = Properties.Settings.Default.AlyxDirectory;
+            txtAlyxDirectory.Text = readAlyxDir();
         }
     }
 }

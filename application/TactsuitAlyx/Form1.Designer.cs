@@ -37,8 +37,6 @@
             this.btnBrowse = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnSettings = new System.Windows.Forms.Button();
-            this.btnTest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,7 +82,7 @@
             // 
             this.lblInfo.AutoSize = true;
             this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInfo.Location = new System.Drawing.Point(38, 526);
+            this.lblInfo.Location = new System.Drawing.Point(38, 467);
             this.lblInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(111, 29);
@@ -95,7 +93,7 @@
             // 
             this.txtAlyxDirectory.Enabled = false;
             this.txtAlyxDirectory.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAlyxDirectory.Location = new System.Drawing.Point(44, 392);
+            this.txtAlyxDirectory.Location = new System.Drawing.Point(44, 333);
             this.txtAlyxDirectory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtAlyxDirectory.Name = "txtAlyxDirectory";
             this.txtAlyxDirectory.Size = new System.Drawing.Size(482, 30);
@@ -104,7 +102,7 @@
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(537, 392);
+            this.btnBrowse.Location = new System.Drawing.Point(537, 333);
             this.btnBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(112, 35);
@@ -117,7 +115,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(38, 357);
+            this.label1.Location = new System.Drawing.Point(38, 298);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(418, 29);
@@ -128,37 +126,12 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(38, 468);
+            this.label2.Location = new System.Drawing.Point(38, 409);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(635, 29);
             this.label2.TabIndex = 7;
             this.label2.Text = "Make sure you run the game with launch option -condebug";
-            // 
-            // btnSettings
-            // 
-            this.btnSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSettings.Location = new System.Drawing.Point(44, 258);
-            this.btnSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(212, 72);
-            this.btnSettings.TabIndex = 8;
-            this.btnSettings.Text = "Settings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-            // 
-            // btnTest
-            // 
-            this.btnTest.Enabled = false;
-            this.btnTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTest.Location = new System.Drawing.Point(428, 258);
-            this.btnTest.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(222, 72);
-            this.btnTest.TabIndex = 9;
-            this.btnTest.Text = "Test";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // Form1
             // 
@@ -167,8 +140,6 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(686, 548);
-            this.Controls.Add(this.btnTest);
-            this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnBrowse);
@@ -201,8 +172,6 @@
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        public System.Windows.Forms.Button btnSettings;
-        public System.Windows.Forms.Button btnTest;
     }
 }
 
