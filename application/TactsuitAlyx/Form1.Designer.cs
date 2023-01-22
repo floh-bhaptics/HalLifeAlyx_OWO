@@ -45,10 +45,9 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(188, 18);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pictureBox1.Location = new System.Drawing.Point(136, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(286, 77);
+            this.pictureBox1.Size = new System.Drawing.Size(191, 50);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -56,12 +55,11 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(44, 135);
-            this.btnStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnStart.Location = new System.Drawing.Point(29, 88);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(282, 94);
+            this.btnStart.Size = new System.Drawing.Size(188, 61);
             this.btnStart.TabIndex = 1;
-            this.btnStart.Text = "Start";
+            this.btnStart.Text = "Connect";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -69,12 +67,11 @@
             // 
             this.btnStop.Enabled = false;
             this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStop.Location = new System.Drawing.Point(368, 135);
-            this.btnStop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnStop.Location = new System.Drawing.Point(245, 88);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(282, 94);
+            this.btnStop.Size = new System.Drawing.Size(188, 61);
             this.btnStop.TabIndex = 2;
-            this.btnStop.Text = "Stop";
+            this.btnStop.Text = "Disconnect";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
@@ -82,10 +79,9 @@
             // 
             this.lblInfo.AutoSize = true;
             this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInfo.Location = new System.Drawing.Point(38, 467);
-            this.lblInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblInfo.Location = new System.Drawing.Point(25, 304);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(111, 29);
+            this.lblInfo.Size = new System.Drawing.Size(74, 20);
             this.lblInfo.TabIndex = 3;
             this.lblInfo.Text = "Waiting...";
             // 
@@ -93,19 +89,17 @@
             // 
             this.txtAlyxDirectory.Enabled = false;
             this.txtAlyxDirectory.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAlyxDirectory.Location = new System.Drawing.Point(44, 333);
-            this.txtAlyxDirectory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtAlyxDirectory.Location = new System.Drawing.Point(29, 216);
             this.txtAlyxDirectory.Name = "txtAlyxDirectory";
-            this.txtAlyxDirectory.Size = new System.Drawing.Size(482, 30);
+            this.txtAlyxDirectory.Size = new System.Drawing.Size(323, 23);
             this.txtAlyxDirectory.TabIndex = 4;
             this.txtAlyxDirectory.Text = "C:\\Steam\\steamapps\\common\\Half-Life Alyx";
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(537, 333);
-            this.btnBrowse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnBrowse.Location = new System.Drawing.Point(358, 216);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(112, 35);
+            this.btnBrowse.Size = new System.Drawing.Size(75, 23);
             this.btnBrowse.TabIndex = 5;
             this.btnBrowse.Text = "Browse...";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -115,31 +109,29 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(38, 298);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(25, 194);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(418, 29);
+            this.label1.Size = new System.Drawing.Size(319, 20);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Select Your Half-Life Alyx install folder";
+            this.label1.Text = "Select your \"Half-Life Alyx\" installation folder";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(38, 409);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(25, 266);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(635, 29);
+            this.label2.Size = new System.Drawing.Size(421, 20);
             this.label2.TabIndex = 7;
             this.label2.Text = "Make sure you run the game with launch option -condebug";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(686, 548);
+            this.ClientSize = new System.Drawing.Size(461, 367);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnBrowse);
@@ -149,9 +141,8 @@
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.pictureBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.MaximumSize = new System.Drawing.Size(708, 604);
-            this.MinimumSize = new System.Drawing.Size(708, 604);
+            this.MaximumSize = new System.Drawing.Size(477, 406);
+            this.MinimumSize = new System.Drawing.Size(477, 406);
             this.Name = "Form1";
             this.Text = "OWO skin Alyx Interface";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
