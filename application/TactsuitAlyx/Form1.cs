@@ -503,9 +503,40 @@ namespace TactsuitAlyx
             txtAlyxDirectory.Text = readAlyxDir();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private static void CopyFilesRecursively(string sourcePath, string targetPath)
         {
+            //Now Create all of the directories
+            foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+            {
+                if (!Directory.Exists(dirPath.Replace(sourcePath, targetPath))) Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
+            }
 
+            //Copy all the files & Replaces any files with the same name
+            foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
+            }
+        }
+
+        private void InstallMod_Click(object sender, EventArgs e)
+        {
+            string exePath = txtAlyxDirectory.Text + "\\game\\bin\\win64\\hlvr.exe";
+            if (!File.Exists(exePath))
+            {
+                MessageBox.Show("Please select your Half-Life Alyx installation folder correctly first: " + exePath, "Error Starting", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            string scriptPath = txtAlyxDirectory.Text + "\\game\\hlvr\\scripts\\vscripts\\tactsuit.lua";
+            if (!File.Exists(scriptPath))
+            {
+                WriteTextSafe("Installing...");
+                CopyFilesRecursively(".\\scripts", txtAlyxDirectory.Text);
+                return;
+            }
+            else
+            {
+                WriteTextSafe("Already installed");
+            }
         }
     }
 }

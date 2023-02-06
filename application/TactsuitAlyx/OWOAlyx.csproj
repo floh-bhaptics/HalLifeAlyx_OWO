@@ -211,6 +211,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(ProjectDir)OWOSensations\*.*" "$(TargetDir)OWO\" /S /Y</PostBuildEvent>
+    <PostBuildEvent>XCOPY "$(ProjectDir)OWOSensations\*.*" "$(TargetDir)OWO\" /S /Y
+XCOPY "$(ProjectDir)scripts\*.*" "$(TargetDir)scripts\" /S /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>
