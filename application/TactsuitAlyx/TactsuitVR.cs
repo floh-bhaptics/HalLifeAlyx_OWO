@@ -689,6 +689,7 @@ namespace TactsuitAlyx
         {
             if (FeedbackMap.ContainsKey(pattern))
             {
+                if (!FeedbackMapWithoutMuscles.ContainsKey(pattern)) return;
                 ISensation sensation = FeedbackMapWithoutMuscles[pattern];
                 Muscle myMuscle = Muscle.Pectoral_R;
                 // two parameters can be given to the pattern to move it on the vest:
@@ -747,7 +748,9 @@ namespace TactsuitAlyx
         public void ProvideHapticFeedback(float locationAngle, float locationHeight, FeedbackType effect, bool waitToPlay, FeedbackType secondEffect)
         {
             if (effect == FeedbackType.NoFeedback) return;
-            string myFeedback = feedbackMap[effect].prefix + "_1";
+            if (!feedbackMap.ContainsKey(effect)) return;
+            string myFeedback = feedbackMap[effect].prefix + "1";
+            if (!FeedbackMap.ContainsKey(myFeedback)) return;
             if (locationAngle != 0.0f) PlayBackHit(myFeedback, locationAngle, locationHeight);
             else PlayBackFeedback(myFeedback);
         }

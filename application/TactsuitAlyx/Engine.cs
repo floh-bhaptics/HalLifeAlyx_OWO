@@ -78,8 +78,9 @@ namespace TactsuitAlyx
                 if (!veryLowHealthFeedbackPlaying)
                 {
                     veryLowHealthFeedbackPlaying = true;
-                    Thread thread = new Thread(() => VeryLowHealthFeedback(true));
-                    thread.Start();
+                    //Thread thread = new Thread(() => VeryLowHealthFeedback(true));
+                    //thread.Start();
+                    tactsuitVr.ProvideHapticFeedback(0.0f, 0.0f, TactsuitVR.FeedbackType.ThreeHeartBeats, false, TactsuitVR.FeedbackType.NoFeedback);
                 }
             }
             else if (playerRemainingHealth <= Config.VeryLowHealthAmount)
@@ -87,8 +88,9 @@ namespace TactsuitAlyx
                 if (!veryLowHealthFeedbackPlaying)
                 {
                     veryLowHealthFeedbackPlaying = true;
-                    Thread thread = new Thread(() => VeryLowHealthFeedback(false));
-                    thread.Start();
+                    //Thread thread = new Thread(() => VeryLowHealthFeedback(false));
+                    //thread.Start();
+                    tactsuitVr.ProvideHapticFeedback(0.0f, 0.0f, TactsuitVR.FeedbackType.ThreeHeartBeats, false, TactsuitVR.FeedbackType.NoFeedback);
                 }
             }
             else if (playerRemainingHealth <= Config.LowHealthAmount)
@@ -96,9 +98,15 @@ namespace TactsuitAlyx
                 if (!lowHealthFeedbackPlaying)
                 {
                     lowHealthFeedbackPlaying = true;
-                    Thread thread = new Thread(LowHealthFeedback);
-                    thread.Start();
+                    //Thread thread = new Thread(LowHealthFeedback);
+                    //thread.Start();
+                    tactsuitVr.ProvideHapticFeedback(0.0f, 0.0f, TactsuitVR.FeedbackType.ThreeHeartBeats, false, TactsuitVR.FeedbackType.NoFeedback);
                 }
+            }
+            else
+            {
+                lowHealthFeedbackPlaying = false;
+                veryLowHealthFeedbackPlaying = false;
             }
         }
 
@@ -465,8 +473,8 @@ namespace TactsuitAlyx
                     leftArm
                         ? TactsuitVR.FeedbackType.HealthStationUseLeftArm
                         : TactsuitVR.FeedbackType.HealthStationUseRightArm, false, TactsuitVR.FeedbackType.NoFeedback);
-                tactsuitVr.ProvideHapticFeedback(0, 0, TactsuitVR.FeedbackType.HealthStationUse, false,
-                    TactsuitVR.FeedbackType.NoFeedback);
+                //tactsuitVr.ProvideHapticFeedback(0, 0, TactsuitVR.FeedbackType.HealthStationUse, false,
+                //    TactsuitVR.FeedbackType.NoFeedback);
                 Thread.Sleep(2000);
             }
         }
@@ -493,7 +501,7 @@ namespace TactsuitAlyx
             {
                 if (!menuOpen)
                 {
-                    tactsuitVr.ProvideHapticFeedback(0, 0, TactsuitVR.FeedbackType.CoughHead, false, TactsuitVR.FeedbackType.NoFeedback);
+                    //tactsuitVr.ProvideHapticFeedback(0, 0, TactsuitVR.FeedbackType.CoughHead, false, TactsuitVR.FeedbackType.NoFeedback);
 
                     tactsuitVr.ProvideHapticFeedback(0, 0, TactsuitVR.FeedbackType.Cough, false, TactsuitVR.FeedbackType.NoFeedback);
                 }
