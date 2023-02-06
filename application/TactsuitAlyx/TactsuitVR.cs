@@ -613,7 +613,7 @@ namespace TactsuitAlyx
             string configPath = Directory.GetCurrentDirectory() + "\\OWO";
 
             DirectoryInfo d = new DirectoryInfo(configPath);
-            FileInfo[] Files = d.GetFiles("*.tact");
+            FileInfo[] Files = d.GetFiles("*.owo");
             
             for (int i = 0; i < Files.Length; i++)
             {
@@ -744,13 +744,18 @@ namespace TactsuitAlyx
             else PlayBackFeedback("Recoil_L");
         }
 
+        public void WarningFeedback()
+        {
+            OWO.Send(FeedbackMap["ThreeHeartBeats"], Muscle.Pectoral_L);
+        }
 
         public void ProvideHapticFeedback(float locationAngle, float locationHeight, FeedbackType effect, bool waitToPlay, FeedbackType secondEffect)
         {
+            
             if (effect == FeedbackType.NoFeedback) return;
-            if (!feedbackMap.ContainsKey(effect)) return;
+            if (!feedbackMap.ContainsKey(effect)) { return; }
             string myFeedback = feedbackMap[effect].prefix + "1";
-            if (!FeedbackMap.ContainsKey(myFeedback)) return;
+            if (!FeedbackMap.ContainsKey(myFeedback)) { return; }
             if (locationAngle != 0.0f) PlayBackHit(myFeedback, locationAngle, locationHeight);
             else PlayBackFeedback(myFeedback);
         }
