@@ -671,7 +671,7 @@ namespace TactsuitAlyx
             {
                 systemInitialized = true;
                 //LOG("OWO suit connected.");
-                PlayBackFeedback("Startup");
+                PlayBackFeedback("Startup_1");
             }
             //if (!systemInitialized) LOG("Owo is not enabled?!?!");
         }
