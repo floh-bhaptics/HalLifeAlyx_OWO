@@ -38,6 +38,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.InstallMod = new System.Windows.Forms.Button();
+            this.IP = new System.Windows.Forms.TextBox();
+            this.StartWithIP = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,12 +59,12 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(44, 135);
+            this.btnStart.Location = new System.Drawing.Point(44, 116);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(282, 94);
             this.btnStart.TabIndex = 1;
-            this.btnStart.Text = "Connect";
+            this.btnStart.Text = "Auto-Connect";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -70,7 +72,7 @@
             // 
             this.btnStop.Enabled = false;
             this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStop.Location = new System.Drawing.Point(368, 135);
+            this.btnStop.Location = new System.Drawing.Point(368, 116);
             this.btnStop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(282, 94);
@@ -146,12 +148,36 @@
             this.InstallMod.UseVisualStyleBackColor = true;
             this.InstallMod.Click += new System.EventHandler(this.InstallMod_Click);
             // 
+            // IP
+            // 
+            this.IP.BackColor = System.Drawing.SystemColors.Control;
+            this.IP.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IP.Location = new System.Drawing.Point(283, 226);
+            this.IP.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.IP.Name = "IP";
+            this.IP.Size = new System.Drawing.Size(281, 30);
+            this.IP.TabIndex = 9;
+            // 
+            // StartWithIP
+            // 
+            this.StartWithIP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StartWithIP.Location = new System.Drawing.Point(44, 223);
+            this.StartWithIP.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.StartWithIP.Name = "StartWithIP";
+            this.StartWithIP.Size = new System.Drawing.Size(213, 34);
+            this.StartWithIP.TabIndex = 10;
+            this.StartWithIP.Text = "Connect to IP:";
+            this.StartWithIP.UseVisualStyleBackColor = true;
+            this.StartWithIP.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(682, 538);
+            this.Controls.Add(this.StartWithIP);
+            this.Controls.Add(this.IP);
             this.Controls.Add(this.InstallMod);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -186,6 +212,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button InstallMod;
+        private System.Windows.Forms.TextBox IP;
+        private System.Windows.Forms.Button StartWithIP;
     }
 }
 

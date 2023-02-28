@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -391,7 +392,7 @@ namespace TactsuitAlyx
             WriteTextSafe("Waiting...");
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private void Connect(string myIP)
         {
             string exePath = txtAlyxDirectory.Text + "\\game\\bin\\win64\\hlvr.exe";
             if (!File.Exists(exePath))
@@ -413,19 +414,38 @@ namespace TactsuitAlyx
                 return;
             }
 
+            WriteTextSafe("Starting...");
             btnStart.Enabled = false;
             btnStop.Enabled = true;
             btnBrowse.Enabled = false;
+
             tactsuitVr = new TactsuitVR();
-            tactsuitVr.CreateSystem();
-            engine = new Engine(tactsuitVr);
+            tactsuitVr.CreateSystem(myIP);
+            if (tactsuitVr.systemInitialized)
+            {
+                engine = new Engine(tactsuitVr);
+                parsingMode = true;
+                Thread thread = new Thread(ParseConsole);
+                thread.Start();
+            }
+            else
+            {
+                tactsuitVr.DestroySystem();
+                tactsuitVr = null;
+                btnStart.Enabled = true;
+                btnStop.Enabled = false;
+                btnBrowse.Enabled = true;
+                string errorMessage = "Unable to connect";
+                if (myIP != "") errorMessage += " to IP " + myIP;
+                errorMessage += "? Please make sure the OWO app is running in the same network and with mobile data turned off.";
+                MessageBox.Show(errorMessage, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
 
-            WriteTextSafe("Starting...");
-            
-            parsingMode = true;
-
-            Thread thread = new Thread(ParseConsole);
-            thread.Start();
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            Connect("");
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -438,6 +458,8 @@ namespace TactsuitAlyx
 
             if (tactsuitVr.systemInitialized)
             {
+                tactsuitVr.DestroySystem();
+                tactsuitVr = null;
                 //tactsuitVr.hapticPlayer.Disable();
                 //tactsuitVr.hapticPlayer.Dispose();
             }
@@ -537,6 +559,24 @@ namespace TactsuitAlyx
             {
                 WriteTextSafe("Already installed");
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string myIP = IP.Text;
+            IPAddress myAddress;
+            if (myIP == "")
+            {
+                MessageBox.Show("Please enter an IP address in the field behind the button.", "IP Address Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if ((!myIP.Contains("."))||(!IPAddress.TryParse(myIP, out myAddress)))
+            {
+                MessageBox.Show("Please enter a valid IP address (e.g. 192.168.1.15) in the field.", "IP Address Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Connect(myIP);
         }
     }
 }

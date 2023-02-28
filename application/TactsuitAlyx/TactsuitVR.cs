@@ -652,28 +652,41 @@ namespace TactsuitAlyx
             }
         }
 
-        public void CreateSystem()
+        public void CreateSystem(string MyIP)
         {
             if (!systemInitialized)
             {
                 RegisterFeedbackFiles();
-                InitializeOWO();
+                InitializeOWO(MyIP);
             }
         }
 
-        private async void InitializeOWO()
+        public void DestroySystem()
+        {
+            OWO.Disconnect();
+            systemInitialized = false;
+        }
+
+        private async void InitializeOWO(string MyIP)
         {
             //LOG("Initializing suit");
-
-            await OWO.AutoConnectAsync();
-
-            if (OWO.IsConnected)
+            if (MyIP != "")
             {
-                systemInitialized = true;
-                //LOG("OWO suit connected.");
-                PlayBackFeedback("Startup_1");
+
+                systemInitialized = OWO.Connect(MyIP);
+                Thread.Sleep(2000);
             }
-            //if (!systemInitialized) LOG("Owo is not enabled?!?!");
+            else
+            {
+                await OWO.AutoConnectAsync();
+                if (OWO.IsConnected)
+                {
+                    systemInitialized = true;
+                    //LOG("OWO suit connected.");
+                }
+            }
+
+            if (systemInitialized) PlayBackFeedback("Startup_1");
         }
 
         public void PlayBackFeedback(string feedback)
@@ -692,30 +705,41 @@ namespace TactsuitAlyx
                 if (!FeedbackMapWithoutMuscles.ContainsKey(pattern)) return;
                 ISensation sensation = FeedbackMapWithoutMuscles[pattern];
                 Muscle myMuscle = Muscle.Pectoral_R;
+                Muscle secondMuscle = Muscle.Pectoral_L;
+                bool bigImpact = false;
+                if (pattern.Contains("Explosion")) bigImpact = true;
+                if (pattern.Contains("Unarmed")) bigImpact = true;
+                if (pattern.Contains("Grenade")) bigImpact = true;
+                if (pattern.Contains("Environment")) bigImpact = true;
                 // two parameters can be given to the pattern to move it on the vest:
                 // 1. An angle in degrees [0, 360] to turn the pattern to the left
                 // 2. A shift [-0.5, 0.5] in y-direction (up and down) to move it up or down
                 if ((xzAngle < 90f))
                 {
-                    if (yShift >= 0f) myMuscle = Muscle.Pectoral_L;
+                    if (bigImpact) { myMuscle = Muscle.Pectoral_L; secondMuscle = Muscle.Abdominal_L; }
+                    else if (yShift >= 0f) myMuscle = Muscle.Pectoral_L;
                     else myMuscle = Muscle.Abdominal_L;
                 }
                 if ((xzAngle > 90f) && (xzAngle < 180f))
                 {
-                    if (yShift >= 0f) myMuscle = Muscle.Dorsal_L;
+                    if (bigImpact) { myMuscle = Muscle.Dorsal_L; secondMuscle = Muscle.Lumbar_L; }
+                    else if (yShift >= 0f) myMuscle = Muscle.Dorsal_L;
                     else myMuscle = Muscle.Lumbar_L;
                 }
                 if ((xzAngle > 180f) && (xzAngle < 270f))
                 {
-                    if (yShift >= 0f) myMuscle = Muscle.Dorsal_R;
+                    if (bigImpact) { myMuscle = Muscle.Dorsal_R; secondMuscle = Muscle.Lumbar_R; }
+                    else if (yShift >= 0f) myMuscle = Muscle.Dorsal_R;
                     else myMuscle = Muscle.Lumbar_R;
                 }
                 if ((xzAngle > 270f))
                 {
-                    if (yShift >= 0f) myMuscle = Muscle.Pectoral_R;
+                    if (bigImpact) { myMuscle = Muscle.Pectoral_R; secondMuscle = Muscle.Abdominal_R; }
+                    else if (yShift >= 0f) myMuscle = Muscle.Pectoral_R;
                     else myMuscle = Muscle.Abdominal_R;
                 }
-                OWO.Send(sensation, myMuscle);
+                if (bigImpact) OWO.Send(sensation, myMuscle, secondMuscle);
+                else OWO.Send(sensation, myMuscle);
             }
             else
             {
