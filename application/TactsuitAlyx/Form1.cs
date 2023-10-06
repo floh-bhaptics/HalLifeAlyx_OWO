@@ -421,6 +421,7 @@ namespace TactsuitAlyx
 
             tactsuitVr = new TactsuitVR();
             tactsuitVr.CreateSystem(myIP);
+            Thread.Sleep(5000);
             if (tactsuitVr.systemInitialized)
             {
                 engine = new Engine(tactsuitVr);

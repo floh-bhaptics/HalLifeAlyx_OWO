@@ -1,4 +1,4 @@
-﻿using OWOHaptic;
+﻿using OWOGame;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
@@ -23,8 +23,7 @@ namespace TactsuitAlyx
         //public HapticPlayer hapticPlayer;
         
         Dictionary<FeedbackType, Feedback> feedbackMap = new Dictionary<FeedbackType, Feedback>();
-        public Dictionary<String, ISensation> FeedbackMap = new Dictionary<String, ISensation>();
-        public Dictionary<String, ISensation> FeedbackMapWithoutMuscles = new Dictionary<String, ISensation>();
+        public Dictionary<String, Sensation> FeedbackMap = new Dictionary<String, Sensation>();
 
         public enum FeedbackType
         {
@@ -602,11 +601,6 @@ namespace TactsuitAlyx
             feedbackMap.Add(FeedbackType.DefaultDamage, new Feedback(FeedbackType.DefaultDamage, "DefaultDamage_", 0));
         }
 
-        public string DetachFromMuscles(string pattern)
-        {
-            return System.Text.RegularExpressions.Regex.Replace(pattern, "\\|([0-9]%[0-9]+(,)*)+", "");
-        }
-
 
         void RegisterFeedbackFiles()
         {
@@ -630,11 +624,9 @@ namespace TactsuitAlyx
                     {
                         //TactFileRegister(configPath, filename, element.Value);
                         string tactFileStr = File.ReadAllText(fullName);
-                        string tactFileStrWithoutMuscles = DetachFromMuscles(tactFileStr);
                         try
                         {
-                            ISensation test = Sensation.FromCode(tactFileStr);
-                            ISensation testNoMuscles = Sensation.FromCode(tactFileStrWithoutMuscles);
+                            Sensation test = Sensation.Parse(tactFileStr);
                             //bHaptics.RegisterFeedback(prefix, tactFileStr);
                             //LOG("Pattern registered: " + prefix);
                             Feedback f = feedbackMap[element.Value.feedbackType];
@@ -642,7 +634,6 @@ namespace TactsuitAlyx
                             feedbackMap[element.Value.feedbackType] = f;
 
                             FeedbackMap.Add(prefix, test);
-                            FeedbackMapWithoutMuscles.Add(prefix, testNoMuscles);
                         }
                         catch (Exception e) { break; }
 
@@ -651,6 +642,29 @@ namespace TactsuitAlyx
                 }
             }
         }
+
+        private BakedSensation[] AllBakedSensations()
+        {
+            var result = new List<BakedSensation>();
+
+            foreach (var sensation in FeedbackMap.Values)
+            {
+                /*
+                BakedSensation baked = (BakedSensation) sensation;
+                if (sensation != baked)
+                {
+                    continue;
+                }
+                */
+                if (sensation is BakedSensation baked)
+                    result.Add(baked);
+                else continue;
+            }
+
+            return result.ToArray();
+        }
+
+
 
         public void CreateSystem(string MyIP)
         {
@@ -669,19 +683,24 @@ namespace TactsuitAlyx
 
         private async void InitializeOWO(string MyIP)
         {
+            var gameAuth = GameAuth.Create(AllBakedSensations()).WithId("340637");
+
+            OWO.Configure(gameAuth);
+
             //LOG("Initializing suit");
             if (MyIP != "")
             {
-
-                systemInitialized = OWO.Connect(MyIP);
-                Thread.Sleep(2000);
+                systemInitialized = true;
+                await OWO.Connect(MyIP);
+                if (OWO.ConnectionState != ConnectionState.Connected) systemInitialized = false;
             }
             else
             {
-                await OWO.AutoConnectAsync();
-                if (OWO.IsConnected)
+                systemInitialized = true;
+                await OWO.AutoConnect();
+                if (OWO.ConnectionState != ConnectionState.Connected)
                 {
-                    systemInitialized = true;
+                    systemInitialized = false;
                     //LOG("OWO suit connected.");
                 }
             }
@@ -702,8 +721,8 @@ namespace TactsuitAlyx
         {
             if (FeedbackMap.ContainsKey(pattern))
             {
-                if (!FeedbackMapWithoutMuscles.ContainsKey(pattern)) return;
-                ISensation sensation = FeedbackMapWithoutMuscles[pattern];
+                //if (!FeedbackMapWithoutMuscles.ContainsKey(pattern)) return;
+                Sensation sensation = FeedbackMap[pattern];
                 Muscle myMuscle = Muscle.Pectoral_R;
                 Muscle secondMuscle = Muscle.Pectoral_L;
                 bool bigImpact = false;
@@ -751,7 +770,7 @@ namespace TactsuitAlyx
 
         public void ArmHit(string pattern, bool isRightArm)
         {
-            ISensation sensation = FeedbackMap[pattern];
+            Sensation sensation = FeedbackMap[pattern];
             Muscle myMuscle = Muscle.Arm_L;
             if (isRightArm) myMuscle = Muscle.Arm_R;
             OWO.Send(sensation, myMuscle);
@@ -793,7 +812,7 @@ namespace TactsuitAlyx
                         for (int i = 1; i <= feedbackMap[effect].feedbackFileCount; i++)
                         {
                             string key = feedbackMap[effect].prefix + i.ToString();
-                            OWO.StopSensation();
+                            OWO.Stop();
                             //hapticPlayer.TurnOff(key);
                         }
                     }
