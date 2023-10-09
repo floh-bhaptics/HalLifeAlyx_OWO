@@ -799,7 +799,8 @@ namespace TactsuitAlyx
             if (!feedbackMap.ContainsKey(effect)) { return; }
             string myFeedback = feedbackMap[effect].prefix + "1";
             if (!FeedbackMap.ContainsKey(myFeedback)) { return; }
-            if (locationAngle != 0.0f) PlayBackHit(myFeedback, locationAngle, locationHeight);
+            if (!myFeedback.Contains("Spark"))
+                if (locationAngle != 0.0f) PlayBackHit(myFeedback, locationAngle, locationHeight);
             else PlayBackFeedback(myFeedback);
         }
 
