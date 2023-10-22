@@ -712,7 +712,12 @@ namespace TactsuitAlyx
         {
             if (FeedbackMap.ContainsKey(feedback))
             {
-                OWO.Send(FeedbackMap[feedback]);
+                if (FeedbackMap[feedback] is SensationWithMuscles)
+                    OWO.Send(FeedbackMap[feedback]);
+                else
+                {
+                    OWO.Send(FeedbackMap[feedback], Muscle.Pectoral_L, Muscle.Pectoral_R, Muscle.Dorsal_L, Muscle.Dorsal_R);
+                }
             }
             //else LOG("Feedback not registered: " + feedback);
         }
@@ -722,6 +727,11 @@ namespace TactsuitAlyx
             if (FeedbackMap.ContainsKey(pattern))
             {
                 //if (!FeedbackMapWithoutMuscles.ContainsKey(pattern)) return;
+                if (FeedbackMap[pattern] is SensationWithMuscles)
+                {
+                    OWO.Send(FeedbackMap[pattern]);
+                    return;
+                }
                 Sensation sensation = FeedbackMap[pattern];
                 Muscle myMuscle = Muscle.Pectoral_R;
                 Muscle secondMuscle = Muscle.Pectoral_L;
