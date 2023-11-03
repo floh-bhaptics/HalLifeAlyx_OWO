@@ -1,5 +1,8 @@
 # HalfLifeAlyx_OWO
 
+Huge props to ShizOf for making the original Half-Life Alyx mod for bhaptics. I am using all of his LUA scripts here, original source code is here:
+[https://github.com/bhaptics/bhaptics-half-life-alyx](https://github.com/bhaptics/bhaptics-half-life-alyx)
+
 ## SUMMARY
 
 OWO integration mod for Half-Life Alyx. Many different haptic effects on Vest, 
